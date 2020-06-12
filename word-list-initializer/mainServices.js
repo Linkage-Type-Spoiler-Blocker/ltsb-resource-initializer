@@ -13,10 +13,12 @@ const getMoviesToBeUploaded = async()=>{
             moviesToBeUploaded.push(curMovie);
         }
     });
+    // console.log('getMoviesToBeUploaded Finished');
     return moviesToBeUploaded;
 }
 
 //TODO director 정보를 원본 movies에 추가하고 있다는 점에 유의, 나중에 분리해야함.
+//TODO 특수문자 제거나 split등 해줘야 한다.
 const extractWordsFromMovies = async(movies)=>{
 
     const wordsPerMovie = [];
@@ -30,6 +32,9 @@ const extractWordsFromMovies = async(movies)=>{
         words.push(...result.chracters);
         words.push(...result.actors);
 
+        //단어들에 대해서 특수문자 공백으로 대체하기
+        //단어들에 대해서 공백기준으로 분할하기.
+
         wordsPerMovie.push({
             movieId : curMovieId,
             words : words
@@ -37,9 +42,9 @@ const extractWordsFromMovies = async(movies)=>{
 
         curMovie.director = result.directorName;
     });
+    // console.log('extractWords Finished');
 
     return wordsPerMovie;
-
 }
 
 module.exports = {

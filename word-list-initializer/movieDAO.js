@@ -1,6 +1,8 @@
 
 const {MovieModel} = require('./connectRDS');
 
+console.log(typeof MovieModel);
+
 const isMovieAlreadyExist = async(movieId)=>{
     const entry = await MovieModel.findOne({
         where :{
@@ -19,7 +21,7 @@ const isMovieAlreadyExist = async(movieId)=>{
 
 const insertMovieDetail = async(movieDetail)=>{
     const releaseYear = movieDetail.release_date.substring(0,4);
-    MovieModel.create({
+    const result = await MovieModel.create({
         movie_id : movieDetail.id,
         movie_name : movieDetail.title,
         director_name : movieDetail.director,
@@ -27,6 +29,7 @@ const insertMovieDetail = async(movieDetail)=>{
         language : movieDetail.original_language,
         wordset_created : 1
     });
+    // console.log(result);
 }
 
 module.exports = {

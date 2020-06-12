@@ -6,7 +6,7 @@ const rdsEndpoint = {
 };
 
 const createMovieModel =(sequelize, DataTypes) =>{
-    sequelize.define('movie',{
+    return sequelize.define('movie',{
         movie_id : {
             type : DataTypes.INTEGER,
             primaryKey : true,
@@ -41,8 +41,9 @@ const createMovieModel =(sequelize, DataTypes) =>{
 
 const sequelize = new Sequelize(process.env.RDS_DBNAME, process.env.RDS_ID, process.env.RDS_PW,{
     host : rdsEndpoint.host,
-    port : rdsEndpoint.port
-})
+    port : rdsEndpoint.port,
+    dialect : "mysql"
+});
 
 const movieModel = createMovieModel(sequelize,Sequelize);
 
@@ -51,7 +52,8 @@ const isInitialized = false;
 module.exports = {
     initialize : (async()=>{
         if(isInitialized === false){
-            sequelize.sync();
+            await sequelize.sync();
+            console.log('initialize finished');
         }
     }),
     MovieModel : movieModel

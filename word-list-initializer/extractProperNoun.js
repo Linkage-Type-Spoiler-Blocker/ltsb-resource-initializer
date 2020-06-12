@@ -1,4 +1,5 @@
 const pos = require('pos');
+const {cleanString} = require('./utils');
 
 const lexer = new pos.Lexer();
 const tagger = new pos.Tagger();
@@ -13,8 +14,11 @@ module.exports = (str)=>{
         const taggedWord = taggedWords[i];
 
         const curTag = taggedWord[1];
+        const curWord = taggedWord[0];
+        const cleanWords = cleanString(curWord);
+
         if(curTag === "NNP"||curTag === "NNPS"){
-            resultWords.push(taggedWord[0]);
+            resultWords.push(...cleanWords);
         }
     }
     return resultWords;

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {cleanString} = require('./utils');
 
 const apiKey = process.env.TMDB_API_KEY;
 
@@ -10,6 +11,7 @@ const getPopularMovies = async()=>{
             page : 1
         }
     });
+    console.log('getPopularMovies Finished');
 
     return response.data.results;
     //TODO 여기서 필요한 부분만 걸러서 주기?
@@ -33,12 +35,15 @@ const getCredits = async(movieId)=>{
     };
 
     cast.forEach((curCast)=>{
-        result.actors.push(curCast.name.toLowerCase());
-        result.chracters.push(curCast.character.toLowerCase());
+        const cleanActorNames = cleanString(curCast.name);
+        const cleanCharacterNames = cleanString(curCast.character);
+        result.actors.push(...cleanActorNames);
+        result.chracters.push(...cleanCharacterNames);
     });
 
     crew.forEach((curCrew)=>{
         if(curCrew.job === "Director"){
+            // 얘는 cleanString 적용하지 맙시다.
             result.directorName  = curCrew.name.toLowerCase();
         }
     });
